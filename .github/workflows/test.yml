@@ -11,4 +11,4 @@ jobs:
       - name: Log Vars
         run: echo 'Running...'
       - name: Log Vars
-        run: echo ${{ github.event.payload.release }}
+        run: echo ${{ github.event.client_payload.release }}
