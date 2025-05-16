@@ -5,11 +5,25 @@ on:
     types: [webhook-trigger]
 
 jobs:
+  get-release-tag:
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.get-tag.outputs.tag }}
+    steps: 
+      - uses: actions/checkout@v4
+      - name: Fetch Tag
+        id: get-tag
+        run: echo "tag=$(git describe --match "v[0-9]*.[0-9]*.[0-9]*" --abbrev=0 --tags $(git rev-list --tags --max-count=1))" >> "$GITHUB_OUTPUT"
+      - name: Set env
+        run: echo "GITHUB_SHA_SHORT=$(git describe --match "v[0-9]*.[0-9]*.[0-9]*" --abbrev=0 --tags $(git rev-list --tags --max-count=1))" >> $GITHUB_ENV
+      - name: Test
+        run: echo $GITHUB_SHA_SHORT
+      
   main:
     runs-on: ubuntu-latest
     steps:
-      - name: Log Vars
-        run: echo 'Running...'
+      - name: Log Tag From Release
+        run: echo ${{ steps.get-release-tag.outputs.tag }}
       - name: Log Release
         run: echo ${{ github.event.client_payload.release }}
       - name: Log Ref
@@ -37,7 +51,7 @@ jobs:
       - run: git fetch --tags origin
 
       - name: git 1
-        run: git describe --tags $(git rev-list --tags --max-count=1 --skip=1 --no-walk)
+        run: git describe --match "v[0-9]*.[0-9]*.[0-9]*" --abbrev=0 --tags $(git rev-list --tags --max-count=1)
 
       - name: git 2
         run: git describe --tags --match='v[0-9]*.[0-9]*.[0-9]*'
