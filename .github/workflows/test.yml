@@ -10,5 +10,7 @@ jobs:
     steps:
       - name: Log Vars
         run: echo 'Running...'
-      - name: Log Vars
+      - name: Log Release
         run: echo ${{ github.event.client_payload.release }}
+      - name: Log Ref
+        run: echo ${{ github.ref_name }}
