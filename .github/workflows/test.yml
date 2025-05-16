@@ -1,0 +1,16 @@
+name: Webhooks Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Release Tag'
+        required: false
+        type: string
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Log Vars
+        run: echo ${{ inputs.release }} >> $GITHUB_OUTPUT
