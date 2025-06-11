@@ -11,7 +11,7 @@ export default async function handler(
   if (!req.headers['x-netlify-event'] || req.headers['x-netlify-event'] !== 'deploy_created') {
     return {
         status: 400,
-        body: "Invalid event type.",
+        body: "Invalid event type",
     }
   }
 
